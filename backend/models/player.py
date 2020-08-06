@@ -1,11 +1,38 @@
 import sqlite3
 
-def insert_player(teamspk, playerdata):
+dbpath = "data/nbabase.db"
+
+def get_playerdata(name):
     with sqlite3.connect(dbpath) as conn:
         cursor = conn.cursor()
-        sql = """INSERT INTO players(
-            teams_pk, first_name, last_name, points, rebounds, assists, steals, blocks, turnovers, efg
-            ) VALUES (?,?,?,?,?,?,?,?,?)"""
-        values = (first_name, last_name,
-                    *(playerdata.values()))
-        cursor.execute(sql, values)
+        sql = """SELECT * FROM players WHERE name=?"""
+        cursor.execute(sql, (name,))
+        arr = cursor.fetchall()[0]
+        output = {}
+        output['G'] = arr[2]
+        output['MP'] = arr[3]
+        output['FG'] = arr[4]
+        output['FGA'] = arr[5]
+        output['FG%'] = arr[6]
+        output['3P'] = arr[7]
+        output['3PA'] = arr[8]
+        output['3P%'] = arr[9]
+        output['2P'] = arr[10]
+        output['2PA'] = arr[11]
+        output['2P%'] = arr[12]
+        output['eFG'] = arr[13]
+        output['FT'] = arr[-12]
+        output['FTA'] = arr[-11]
+        output['FT%'] = arr[-10]
+        output['ORB'] = arr[-9]
+        output['DRB'] = arr[-8]
+        output['TRB'] = arr[-7]
+        output['AST'] = arr[-6]
+        output['STL'] = arr[-5]
+        output['BLK'] = arr[-4]
+        output['TOV'] = arr[-3]
+        output['PF'] = arr[-2]
+        output['PTS'] = arr[-1]
+        return output
+
+print(get_playerdata('Jared Dudley'))

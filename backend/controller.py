@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from models.util import get_playerdata, get_playerurl
+from models.player import get_playerdata
+from models.account import Account
 
 app = Flask(__name__)
 CORS(app)
@@ -10,10 +11,12 @@ CORS(app)
 
 @app.route("/api/player/<first_name>/<last_name>", methods=["GET"])
 def player_data(first_name, last_name):
-    player_vals = get_playerdata(get_playerurl(first_name, last_name))
-    return jsonify({"points": player_vals['points'], "rebounds": player_vals['rebounds'], 
-        "assists": player_vals['assists'], "steals": player_vals['steals'], 'efg': player_vals['efg'],
-        "blocks": player_vals['blocks'], "turnovers":player_vals['turnovers']})
+    name = first_name + ' ' + last_name
+    player_vals = get_playerdata(name)
+    print(player_vals)
+    return jsonify({"points": player_vals['PTS'], "rebounds": player_vals['TRB'], 
+        "assists": player_vals['AST'], "steals": player_vals['STL'], 'efg': player_vals['eFG'],
+        "blocks": player_vals['BLK'], "turnovers":player_vals['TOV']})
 
 
 
@@ -42,7 +45,7 @@ def login():
     # if the account exists, return api_token
     if account:
         account.api_key = account.random_api_key()
-        account.save()
+        account.update()
         return jsonify({"session_id": account.api_key, 
                     "username": account.username})
     return jsonify({"session_id": "", 
@@ -56,8 +59,18 @@ def create_user():
     # TODO: see if account exists
     key = Account.random_api_key()
     new_user = Account(data.get("username"), data.get("password"), 
-                       key, data.get("balance"))
-    new_user.save()
+                       key)
+    new_user.insert()
     # save new account account.save()
     return jsonify({"session_id": new_user.api_key, 
                     "username": new_user.username})
+
+
+@app.route("/api/newteam", methods=["POST"])
+def create_team():
+    data = request.get_json()
+    teamname = data.get("teamname")
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    account.new_team(account.pk, teamname)
