@@ -4,6 +4,7 @@ import Login from './Login';
 import Signup from './Signup';
 import Player from './Player';
 import CreateTeam from './CreateTeam'
+import EditTeam from './EditTeam'
 
 function Router ({ token, setToken }) {
   return (
@@ -27,6 +28,7 @@ function Router ({ token, setToken }) {
    < div>
       <Route path="/player" component={Player} />
       <Route path="/createTeam" component={CreateTeam} />
+      <Route path="/editTeam" component={EditTeam} />
       <Route path="/login" >
       <Login setToken={setToken}/>
       </Route>

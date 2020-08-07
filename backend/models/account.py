@@ -4,6 +4,18 @@ import random
 
 dbpath = "data/nbabase.db"
 
+class InvalidPlayerError(Exception):
+    pass
+
+class InvalidTeamError(Exception):
+    pass
+
+class PlayerExistingError(Exception):
+    pass
+
+class PlayerNotExistingError(Exception):
+    pass
+
 class Account:
 
     def __init__(self, username, password_hash, api_key, pk=None):
@@ -43,6 +55,83 @@ class Account:
                      ) VALUES(?, ?, ?)"""
             values = (user_pk, -1, teamname)
             cursor.execute(sql, values)
+    
+    def insert_player(self, teamname, playername):
+        with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT * FROM players WHERE name=?"""
+            cursor.execute(sql, (playername,))
+            entries = cursor.fetchone()
+            print(entries)
+            if entries is None:
+                raise InvalidPlayerError
+            player_pk = entries[0]
+
+            sql = """SELECT * FROM teams WHERE team_name=? AND user_pk = ?"""
+            cursor.execute(sql, (teamname, self.pk))
+            entries = cursor.fetchone()
+            if entries is None:
+                raise InvalidTeamError
+            entries_teamname = entries[3]
+            entries_account_pk = entries[1]
+            print(teamname, entries_teamname)
+            print(self.pk, entries_account_pk)
+
+            sql = """SELECT * FROM teams WHERE team_name=? AND user_pk = ? and player_pk = ?"""
+            cursor.execute(sql, (teamname, self.pk, player_pk))
+            entryvals = cursor.fetchone()
+            existing = False
+            if entryvals:
+                existing = True
+            
+            if existing:
+                print(player_pk, entryvals[2])
+                raise PlayerExistingError
+
+            sql = """INSERT INTO teams (
+                     user_pk, player_pk, team_name
+                     ) VALUES(?, ?, ?)"""
+            values = (self.pk, player_pk, teamname)
+            cursor.execute(sql, values)
+            return entries
+
+
+    def remove_player(self, teamname, playername):
+        with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT * FROM players WHERE name=?"""
+            cursor.execute(sql, (playername,))
+            entries = cursor.fetchone()
+            print(entries)
+            if entries is None:
+                raise InvalidPlayerError
+            player_pk = entries[0]
+
+            sql = """SELECT * FROM teams WHERE team_name=? AND user_pk = ?"""
+            cursor.execute(sql, (teamname, self.pk))
+            entries = cursor.fetchone()
+            if entries is None:
+                raise InvalidTeamError
+            entries_teamname = entries[3]
+            entries_account_pk = entries[1]
+            print(teamname, entries_teamname)
+            print(self.pk, entries_account_pk)
+
+            sql = """SELECT * FROM teams WHERE team_name=? AND user_pk = ? AND player_pk = ?"""
+            cursor.execute(sql, (teamname, self.pk, player_pk))
+            entryvals = cursor.fetchone()
+            existing = False
+            if entryvals:
+                existing = True
+                print(player_pk, entryvals[2])
+            
+            if not existing:
+                raise PlayerNotExistingError
+
+            sql = """DELETE FROM teams WHERE team_name = ? AND user_pk = ? AND player_pk = ?"""
+            values = (teamname, self.pk, player_pk)
+            cursor.execute(sql, values)
+            return entries
 
     @classmethod
     def login(cls, username, password):
@@ -57,6 +146,7 @@ class Account:
             user = cursor.fetchone()
             # username, password_hash, api_key, pk
             return cls(user[1], user[2], user[3], user[0])
+
 
     @classmethod
     def api_authenticate(cls, api_key):

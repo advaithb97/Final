@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from models.player import get_playerdata
-from models.account import Account
+from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError
 
 app = Flask(__name__)
 CORS(app)
@@ -19,7 +19,6 @@ def player_data(first_name, last_name):
         "blocks": player_vals['BLK'], "turnovers":player_vals['TOV']})
 
 
-
 @app.route("/api/insert", methods=["POST"])
 def insert():
     # use token to authenticate user
@@ -29,10 +28,38 @@ def insert():
         return jsonify({"some error": "error here"})
     # get data from request
     # if the account exists:
+    teamname = data.get("teamname")
+    playername = data.get("playername")
     try:
-        account.insert(get_playerdata(get_playerurl(data.get("first_name"), data.get("last_name"))))
+        account.insert_player(teamname, playername)
     except InvalidPlayerError:
         return jsonify({"error": "invalid player"})
+    except InvalidTeamError:
+        return jsonify({"error": "invalid team"})
+    except PlayerExistingError:
+        return jsonify({"error": "you already have this player on this team"})
+    return jsonify({"success":True})
+
+
+@app.route("/api/remove", methods=["POST"])
+def remove():
+    # use token to authenticate user
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    teamname = data.get("teamname")
+    playername = data.get("playername")
+    try:
+        account.remove_player(teamname, playername)
+    except InvalidPlayerError:
+        return jsonify({"error": "invalid player"})
+    except InvalidTeamError:
+        return jsonify({"error": "invalid team"})
+    except PlayerNotExistingError:
+        return jsonify({"error": "you don't have this player on this team"})
     return jsonify({"success":True})
 
 
