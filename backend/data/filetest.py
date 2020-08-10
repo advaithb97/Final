@@ -68,7 +68,7 @@ for playerurl in extensions:
     titleval = soup.find('title').text
     indexval = titleval.index('Stats')
     name = str(titleval[:indexval-1])
-    print(name)
+    print(name + ' added')
     with sqlite3.connect(dbpath) as conn:
             cursor = conn.cursor()
             sql = """INSERT INTO players (

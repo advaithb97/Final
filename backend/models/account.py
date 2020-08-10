@@ -1,6 +1,7 @@
 import sqlite3
 from hashlib import sha256
 import random
+from .player import get_playerinfo
 
 dbpath = "data/nbabase.db"
 
@@ -132,6 +133,37 @@ class Account:
             values = (teamname, self.pk, player_pk)
             cursor.execute(sql, values)
             return entries
+
+
+    def all_teams(self):
+        with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT * FROM teams WHERE user_pk=?"""
+            cursor.execute(sql, (self.pk,))
+            entries = cursor.fetchall()
+            teamlist = []
+            for entry in entries:
+                tname = entry[3]
+                if tname not in teamlist:
+                    teamlist.append(tname)
+            return teamlist
+
+    def team_players(self, teamname):
+        with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT player_pk FROM teams WHERE user_pk=? and team_name = ?"""
+            cursor.execute(sql, (self.pk, teamname))
+            pklist = cursor.fetchall()
+            playerlist = []
+            pklist = pklist[1:]
+            print(pklist)
+            for primary_key in pklist:
+                print(primary_key)
+                pkey = primary_key[0]
+                playerinfo = get_playerinfo(pkey)
+                playerlist.append(playerinfo)
+            return playerlist
+
 
     @classmethod
     def login(cls, username, password):

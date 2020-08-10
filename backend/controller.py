@@ -101,3 +101,29 @@ def create_team():
     if not account:
         return jsonify({"some error": "error here"})
     account.new_team(account.pk, teamname)
+
+
+@app.route("/api/myTeams", methods=["POST"])
+def my_teams():
+    # use token to authenticate user
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    teams = account.all_teams()
+    print(teams)
+    return jsonify({"teams": teams})
+
+
+@app.route("/api/viewTeam", methods=["POST"])
+def view_team():
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    teamname = data.get("teamname")
+    if not account:
+        return jsonify({"some error": "error here"})
+    tplayers = account.team_players(teamname)
+    print(tplayers)
+    return jsonify({"team": tplayers})
