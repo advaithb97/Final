@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { postRequest } from './models';
+import PlayerElem from './PlayerElem';
+import ReactDOM from 'react-dom'
 
 function showTeam() {
   const [teams, setTeams] = useState([]);
@@ -7,12 +9,16 @@ function showTeam() {
   const [teamName, setTeamName] = useState("");
   const [team, setTeam] = useState([])
   const [teamOut, setTeamOut] = useState([]);
-  const [pointsArr, setPointsArr] = useState([]);
+  const [PTSarr, setPTSarr] = useState([]);
+  const [TRBarr, setTRBarr] = useState([]);
+  const [ASTarr, setASTarr] = useState([]);
+  const [STLarr, setSTLarr] = useState([]);
+  const [BLKarr, setBLKarr] = useState([]);
 
 
   const getTeams = () => {
     const getData = async () => {
-        const token = sessionStorage.getItem("token")
+        const token = sessionStorage.getItem("token");
         const data = await postRequest("myTeams", {token: token});
         const teamvals = data['teams'];
         console.log(teamvals);
@@ -35,19 +41,47 @@ function showTeam() {
 
   const viewInfo = () => {
     const playerData = async () => {
-        console.log(team)
-        let copyArr = [...pointsArr];
+        console.log(team);
+        let copyPTS = [];
+        let copyTRB = [];
+        let copyAST = [];
+        let copySTL = [];
+        let copyBLK = [];
         for (let i = 0; i < team.length; i++) {
             console.log(i);
-            let pts = team[i]['PTS'];
-            console.log(pts)
-            copyArr.push(pts);
-            console.log(copyArr);
+            copyPTS.push(team[i]['PTS']);
+            copyTRB.push(team[i]['TRB']);
+            copyAST.push(team[i]['AST']);
+            copySTL.push(team[i]['STL']);
+            copyBLK.push(team[i]['BLK']);
         }
-        setPointsArr([...copyArr]);
+        console.log(copyPTS);
+        setPTSarr(copyPTS);
+        setTRBarr(copyTRB);
+        setASTarr(copyAST);
+        setSTLarr(copySTL);
+        setBLKarr(copyBLK);
     }
     playerData();
-    console.log(pointsArr);
+  }
+
+  const viewArrs = () => {
+      console.log(PTSarr);
+      console.log(TRBarr);
+      console.log(ASTarr);
+      console.log(STLarr);
+      console.log(BLKarr);
+  }
+
+  const viewPlayers = () => {
+    for (let i = 0; i < team.length; i++) {
+      const PTS = team[i]['PTS']
+      const AST = team[i]['AST']
+      const TRB = team[i]['TRB']
+      const STL = team[i]['STL']
+      const BLK = team[i]['BLK']
+      ReactDOM.render(<PlayerElem PTS={PTS} RB={TRB} AST={AST} STL={STL} BLK={BLK}/>);
+    }
   }
 
   return (
@@ -62,7 +96,9 @@ function showTeam() {
       <br></br>
       <br></br>
       <button onClick={viewInfo}>Check out Info</button>
-      <div>{pointsArr}</div>
+      <div>{PTSarr}</div>
+      <button onClick={viewArrs}>Check out Arrs</button>
+      <button onClick={viewPlayers}>Check out Players</button>
     </div>
   )
 }
