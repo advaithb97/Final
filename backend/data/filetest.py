@@ -42,7 +42,8 @@ for playerurl in extensions:
     MP = float(arr[6].text)
     FG = float(arr[7].text)
     FGA = float(arr[8].text)
-    FGpercent = float(arr[9].text)
+    FGpercent = 0
+    if arr[9].text != '': FGpercent = float(arr[9].text)
     ThreeP = float(arr[10].text)
     ThreePA = float(arr[11].text)
     ThreePercent = 0
@@ -51,7 +52,8 @@ for playerurl in extensions:
     TwoPA = float(arr[14].text)
     TwoPercent = 0
     if arr[12].text != '': TwoPercent = float(arr[15].text)
-    eFG = float(arr[16].text)
+    eFG = 0
+    if arr[16].text != '': eFG = float(arr[16].text)
     FT = float(arr[-12].text)
     FTA = float(arr[-11].text)
     FTpercent = 0

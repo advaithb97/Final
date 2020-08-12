@@ -8,13 +8,16 @@ import EditTeam from './EditTeam'
 import ShowTeam from './ShowTeam'
 
 function Router ({ token, setToken }) {
+  let boolval = true;
+  if (token === null) { boolval = false; }
   return (
-    /** 
     <div>
-      { token ? 
+      { boolval ? 
         <div>
           <Route path="/player" component={Player} />
           <Route path="/createTeam" component={CreateTeam} />
+          <Route path="/editTeam" component={EditTeam} />
+          <Route path="/showTeam" component={ShowTeam} />
         </div>
         :
         <div>
@@ -25,7 +28,9 @@ function Router ({ token, setToken }) {
         </div>
       }
     </div>
-    */
+
+
+    /**
    < div>
       <Route path="/player" component={Player} />
       <Route path="/createTeam" component={CreateTeam} />
@@ -36,6 +41,7 @@ function Router ({ token, setToken }) {
       </Route>
       <Route path="/signup" component={Signup} />
     </div>
+  */
   )
 }
 

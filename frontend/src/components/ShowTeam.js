@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { postRequest } from './models';
 import PlayerElem from './PlayerElem';
-import ReactDOM from 'react-dom'
 
 function showTeam() {
   const [teams, setTeams] = useState([]);
@@ -9,11 +8,14 @@ function showTeam() {
   const [teamName, setTeamName] = useState("");
   const [team, setTeam] = useState([])
   const [teamOut, setTeamOut] = useState([]);
+  const [nameArr, setNameArr] = useState([]);
   const [PTSarr, setPTSarr] = useState([]);
   const [TRBarr, setTRBarr] = useState([]);
   const [ASTarr, setASTarr] = useState([]);
   const [STLarr, setSTLarr] = useState([]);
   const [BLKarr, setBLKarr] = useState([]);
+
+  const [playersArr, setPlayersArr] = useState([]);
 
 
   const getTeams = () => {
@@ -47,8 +49,10 @@ function showTeam() {
         let copyAST = [];
         let copySTL = [];
         let copyBLK = [];
+        let copyNames = [];
         for (let i = 0; i < team.length; i++) {
             console.log(i);
+            copyNames.push(team[i]['name']);
             copyPTS.push(team[i]['PTS']);
             copyTRB.push(team[i]['TRB']);
             copyAST.push(team[i]['AST']);
@@ -56,6 +60,7 @@ function showTeam() {
             copyBLK.push(team[i]['BLK']);
         }
         console.log(copyPTS);
+        setNameArr(copyNames);
         setPTSarr(copyPTS);
         setTRBarr(copyTRB);
         setASTarr(copyAST);
@@ -66,6 +71,7 @@ function showTeam() {
   }
 
   const viewArrs = () => {
+      console.log(nameArr);
       console.log(PTSarr);
       console.log(TRBarr);
       console.log(ASTarr);
@@ -74,14 +80,18 @@ function showTeam() {
   }
 
   const viewPlayers = () => {
+    let copyArr = [];
     for (let i = 0; i < team.length; i++) {
+      const name = team[i]['name']
       const PTS = team[i]['PTS']
       const AST = team[i]['AST']
       const TRB = team[i]['TRB']
       const STL = team[i]['STL']
       const BLK = team[i]['BLK']
-      ReactDOM.render(<PlayerElem PTS={PTS} RB={TRB} AST={AST} STL={STL} BLK={BLK}/>);
+      const x = <PlayerElem name={name} PTS={PTS} TRB={TRB} AST={AST} STL={STL} BLK={BLK}/>
+      copyArr.push(x);
     }
+    setPlayersArr(copyArr);
   }
 
   return (
@@ -98,7 +108,9 @@ function showTeam() {
       <button onClick={viewInfo}>Check out Info</button>
       <div>{PTSarr}</div>
       <button onClick={viewArrs}>Check out Arrs</button>
+      <br></br>
       <button onClick={viewPlayers}>Check out Players</button>
+      {playersArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
     </div>
   )
 }

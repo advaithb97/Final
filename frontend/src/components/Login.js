@@ -10,7 +10,7 @@ export default function Login() {
     const getData = async () => {
         const data = await postRequest("login", {username: username, password: password});
         sessionStorage.setItem("token", data.session_id);
-        console.log(data)
+        console.log(data);
     }
     getData();
   }
