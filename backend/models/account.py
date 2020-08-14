@@ -51,6 +51,19 @@ class Account:
             values = (self.username, password_hash, self.api_key)
             cursor.execute(sql, values)
 
+    def new_result(self, winteam, lossteam):
+        """Add a new account to the database
+        """
+        # Will need to hash our password
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """INSERT INTO results (
+                     winteam, lossteam, upvotes, downvotes
+                     ) VALUES(?, ?, ?)"""
+            values = (winteam, lossteam, 0, 0)
+            cursor.execute(sql, values)
+            
+
     def new_team(self, user_pk, teamname):
         with sqlite3.connect(self.dbpath) as conn:
             cursor = conn.cursor()

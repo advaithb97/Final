@@ -78,6 +78,20 @@ def login():
     return jsonify({"session_id": "", 
                     "username": ""})
 
+@app.route("/api/insert_result", methods=["POST"])
+def insert_result():
+    # get data from request
+    data = request.get_json()
+    # TODO: see if account exists
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    winteam = data.get("winteam")
+    lossteam = data.get("lossteam")
+    account.new_result(winteam, lossteam)
+
 
 @app.route("/api/create", methods=["POST"])
 def create_user():

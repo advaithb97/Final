@@ -27,6 +27,9 @@ function compareTeams() {
 
   const [playersArr, setPlayersArr] = useState([]);
 
+  const [winTeam, setWinTeam] = useState("");
+  const [lossTeam, setLossTeam] = useState("");
+
 
   const getTeams = () => {
     const getData = async () => {
@@ -77,11 +80,17 @@ function compareTeams() {
         console.log(totalpoints2);
         if (totalpoints > totalpoints2) {
             setWinResult('team 1 wins');
+            setWinTeam(teamName);
+            setLossTeam(teamName2)
         } else if (totalpoints < totalpoints2) {
             setWinResult('team 2 wins');
+            setWinTeam(teamName2);
+            setLossTeam(teamName);
         } else {setWinResult('tie');}
     }
     compareData();
+    const data = await postRequest("insert_result", {winteam: teamName1, 
+                    lossteam: teamName2, token: token});
   }
 
   const viewInfo = () => {
