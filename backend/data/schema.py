@@ -53,13 +53,14 @@ def schema(dbpath="nbabase.db"):
             PTS FLOAT
         );""")
 
+
         cur.execute("""
         CREATE TABLE results (
             pk INTEGER PRIMARY KEY AUTOINCREMENT,
             winteam VARCHAR(25),
             lossteam VARCHAR(25),
-            upvote INTEGER,
-            downvote INTEGER
+            upvotes INTEGER,
+            downvotes INTEGER
         );""")
 
 

@@ -65,9 +65,9 @@ function compareTeams() {
     viewData();
   }
 
-  const comparisonFnc = () => {
+  const comparisonFnc = async () => {
+    const token = sessionStorage.getItem("token");
     const compareData = async () => {
-        const token = sessionStorage.getItem("token");
         let totalpoints = 0;
         let totalpoints2 = 0;
         for (let i = 0; i < team.length; i++) {
@@ -89,7 +89,7 @@ function compareTeams() {
         } else {setWinResult('tie');}
     }
     compareData();
-    const data = await postRequest("insert_result", {winteam: teamName1, 
+    const data = await postRequest("insert_result", {winteam: teamName, 
                     lossteam: teamName2, token: token});
   }
 

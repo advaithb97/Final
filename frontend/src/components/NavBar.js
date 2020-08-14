@@ -24,6 +24,8 @@ export default function NavBar({token}){
         <br></br>
         <Link style={{color: "pink"}} to="/compareTeams">Compare Teams</Link>
         <br></br>
+        <Link style={{color: "pink"}} to="/votesPage">Votes Page</Link>
+        <br></br>
         </nav>
         
         :

@@ -93,6 +93,49 @@ def insert_result():
     account.new_result(winteam, lossteam)
 
 
+@app.route("/api/upvote", methods=["POST"])
+def upvote():
+    # get data from request
+    data = request.get_json()
+    # TODO: see if account exists
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    winteam = data.get("winteam")
+    lossteam = data.get("lossteam")
+    upvotes = data.get("upvotes")
+    z = account.upvote(upvotes, winteam, lossteam)
+    return jsonify({"upvotes": z})
+
+
+@app.route("/api/downvote", methods=["POST"])
+def downvote():
+    # get data from request
+    data = request.get_json()
+    # TODO: see if account exists
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    winteam = data.get("winteam")
+    lossteam = data.get("lossteam")
+    downvotes = data.get("downvotes")
+    z = account.downvote(downvotes, winteam, lossteam)
+    return jsonify({"downvotes": z})
+
+@app.route("/api/viewVotes", methods=["POST"])
+def view_votes():
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    votes_out = account.show_votes()
+    return jsonify({"votes": votes_out})
+
+
 @app.route("/api/create", methods=["POST"])
 def create_user():
     # get data from request

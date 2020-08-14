@@ -59,10 +59,10 @@ class Account:
             cursor = conn.cursor()
             sql = """INSERT INTO results (
                      winteam, lossteam, upvotes, downvotes
-                     ) VALUES(?, ?, ?)"""
+                     ) VALUES(?, ?, ?, ?)"""
             values = (winteam, lossteam, 0, 0)
             cursor.execute(sql, values)
-            
+
 
     def new_team(self, user_pk, teamname):
         with sqlite3.connect(self.dbpath) as conn:
@@ -172,6 +172,19 @@ class Account:
                     teamlist.append(tname)
             return teamlist
 
+    def show_votes(self):
+        with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT * FROM results"""
+            cursor.execute(sql)
+            entries = cursor.fetchall()
+            voteslist = []
+            for entry in entries:
+                xVal = {"winTeam": entry[1], "lossTeam": entry[2],
+                    "upVotes": entry[3], "downVotes": entry[4]}
+                voteslist.append(xVal)
+            return voteslist
+
     def team_players(self, teamname):
         with sqlite3.connect(dbpath) as conn:
             cursor = conn.cursor()
@@ -187,6 +200,24 @@ class Account:
                 playerinfo = get_playerinfo(pkey)
                 playerlist.append(playerinfo)
             return playerlist
+            
+
+    @classmethod
+    def upvote(cls, upvotes, winteam, lossteam):
+        with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """UPDATE results SET upvotes=? WHERE winteam=? AND lossteam=?"""
+            cursor.execute(sql, (upvotes+1, winteam, lossteam))
+        return upvotes+1
+
+
+    @classmethod
+    def downvote(cls, downvotes, winteam, lossteam):
+        with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """UPDATE results SET downvotes=? WHERE winteam=? AND lossteam=?"""
+            cursor.execute(sql, (downvotes+1, winteam, lossteam))
+        return downvotes+1
 
 
     @classmethod
