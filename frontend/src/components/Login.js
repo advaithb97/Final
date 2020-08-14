@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { postRequest } from './models';
 
 
-export default function Login() {
+export default function Login({setToken}) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 

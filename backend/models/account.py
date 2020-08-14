@@ -11,6 +11,9 @@ class InvalidPlayerError(Exception):
 class InvalidTeamError(Exception):
     pass
 
+class TeamExistingError(Exception):
+    pass
+
 class PlayerExistingError(Exception):
     pass
 
@@ -51,11 +54,19 @@ class Account:
     def new_team(self, user_pk, teamname):
         with sqlite3.connect(self.dbpath) as conn:
             cursor = conn.cursor()
+
+            sql = """SELECT * FROM teams WHERE team_name=? AND user_pk = ?"""
+            cursor.execute(sql, (teamname, self.pk))
+            entries = cursor.fetchone()
+            if not entries is None:
+                raise TeamExistingError
+
             sql = """INSERT INTO teams (
                      user_pk, player_pk, team_name
                      ) VALUES(?, ?, ?)"""
             values = (user_pk, -1, teamname)
             cursor.execute(sql, values)
+
     
     def insert_player(self, teamname, playername):
         with sqlite3.connect(dbpath) as conn:

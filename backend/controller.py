@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from models.player import get_playerdata
-from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError
+from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError, TeamExistingError
 
 app = Flask(__name__)
 CORS(app)
@@ -100,7 +100,12 @@ def create_team():
     account = Account.api_authenticate(data.get("token"))
     if not account:
         return jsonify({"some error": "error here"})
-    account.new_team(account.pk, teamname)
+    try:
+        account.new_team(account.pk, teamname)
+    except TeamExistingError:
+        return jsonify({"error": "you already have this team"})
+    return jsonify({"success":True})
+    
 
 
 @app.route("/api/myTeams", methods=["POST"])

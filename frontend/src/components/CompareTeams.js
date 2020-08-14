@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { postRequest } from './models';
 import PlayerElem from './PlayerElem';
 
-function showTeam() {
+function compareTeams() {
   const [teams, setTeams] = useState([]);
   const [output, setOutput] = useState([]);
   const [teamName, setTeamName] = useState("");
@@ -14,6 +14,16 @@ function showTeam() {
   const [ASTarr, setASTarr] = useState([]);
   const [STLarr, setSTLarr] = useState([]);
   const [BLKarr, setBLKarr] = useState([]);
+  
+  const [teamName2, setTeamName2] = useState('');
+  const [team2, setTeam2] = useState([]);
+  const [PTSarr2, setPTSarr2] = useState([]);
+  const [TRBarr2, setTRBarr2] = useState([]);
+  const [ASTarr2, setASTarr2] = useState([]);
+  const [STLarr2, setSTLarr2] = useState([]);
+  const [BLKarr2, setBLKarr2] = useState([]);
+
+  const [winResult, setWinResult] = useState([]);
 
   const [playersArr, setPlayersArr] = useState([]);
 
@@ -30,7 +40,7 @@ function showTeam() {
     getData();
   }
 
-  const viewTeam = async () => {
+  const viewTeam = () => {
     const viewData = async () => {
         const token = sessionStorage.getItem("token");
         const data = await postRequest("viewTeam", {teamname: teamName, token: token});
@@ -38,7 +48,40 @@ function showTeam() {
         setTeam(data['team']);
         setTeamOut(team.map((elemval) => <p key={elemval}>{elemval}</p>));
     }
-    await viewData();
+    viewData();
+  }
+
+  const viewTeam2 = () => {
+    const viewData = async () => {
+        const token = sessionStorage.getItem("token");
+        const data = await postRequest("viewTeam", {teamname: teamName2, token: token});
+        console.log(data);
+        setTeam2(data['team']);
+        setTeamOut(team.map((elemval) => <p key={elemval}>{elemval}</p>));
+    }
+    viewData();
+  }
+
+  const comparisonFnc = () => {
+    const compareData = async () => {
+        const token = sessionStorage.getItem("token");
+        let totalpoints = 0;
+        let totalpoints2 = 0;
+        for (let i = 0; i < team.length; i++) {
+            console.log(team[i]['PTS'])
+            console.log(team2[i]['PTS']);
+            totalpoints += team[i]['PTS'];
+            totalpoints2 += team2[i]['PTS'];
+        }
+        console.log(totalpoints);
+        console.log(totalpoints2);
+        if (totalpoints > totalpoints2) {
+            setWinResult('team 1 wins');
+        } else if (totalpoints < totalpoints2) {
+            setWinResult('team 2 wins');
+        } else {setWinResult('tie');}
+    }
+    compareData();
   }
 
   const viewInfo = () => {
@@ -80,7 +123,6 @@ function showTeam() {
   }
 
   const viewPlayers = async () => {
-    await viewTeam();
     let copyArr = [];
     for (let i = 0; i < team.length; i++) {
       const name = team[i]['name']
@@ -101,14 +143,16 @@ function showTeam() {
       <p>teams: {teams}</p>
       <div>{output}</div>
       <br></br>
+      <input onChange={e => setTeamName(e.target.value)} placeholder="Enter first team to show"/>
+      <button onClick={viewTeam}>Set Team1</button>
+      <input onChange={e => setTeamName2(e.target.value)} placeholder="Enter second team to show"/>
+      <button onClick={viewTeam2}>Set Team2</button>
+      <button onClick={comparisonFnc}>Compare Teams</button>
       <br></br>
-      <input onChange={e => setTeamName(e.target.value)} placeholder="Enter team to show"/>
-      <button onClick={viewTeam}>ViewTeam</button>
+      {winResult}
       <br></br>
-      <button onClick={viewPlayers}>Check out Players</button>
-      {playersArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
     </div>
   )
 }
 
-export default showTeam;
+export default compareTeams;

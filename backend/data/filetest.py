@@ -27,10 +27,12 @@ with open('2019stats.html') as page:
 '''extensions = []
 with open('2019stats.html') as page:
     soup = BeautifulSoup(page, 'html.parser')
-    playerurl = soup.find('a', string='Ike Anigbogu')['href']
+    playerurl = soup.find('a', string='Duncan Robinson')['href']
     extensions.append(playerurl)
+print(extensions)
+'''
 
-print(extensions)'''
+extensions = extensions[424:]
 
 for playerurl in extensions:
     totalurl = baseurl + playerurl
@@ -51,7 +53,7 @@ for playerurl in extensions:
     TwoP = float(arr[13].text)
     TwoPA = float(arr[14].text)
     TwoPercent = 0
-    if arr[12].text != '': TwoPercent = float(arr[15].text)
+    if arr[15].text != '': TwoPercent = float(arr[15].text)
     eFG = 0
     if arr[16].text != '': eFG = float(arr[16].text)
     FT = float(arr[-12].text)

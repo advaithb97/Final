@@ -6,6 +6,7 @@ import Player from './Player';
 import CreateTeam from './CreateTeam'
 import EditTeam from './EditTeam'
 import ShowTeam from './ShowTeam'
+import CompareTeams from './CompareTeams'
 
 function Router ({ token, setToken }) {
   let boolval = true;
@@ -18,6 +19,7 @@ function Router ({ token, setToken }) {
           <Route path="/createTeam" component={CreateTeam} />
           <Route path="/editTeam" component={EditTeam} />
           <Route path="/showTeam" component={ShowTeam} />
+          <Route path="/compareTeams" component={CompareTeams} />
         </div>
         :
         <div>

@@ -13,14 +13,12 @@ import NavBar from './components/NavBar';
 function App() {
   const [token, setToken] = useStateWithSessionStorage("token", "");
   console.log(token);
-  let tokenval = sessionStorage.getItem("token");
-  console.log(tokenval);
 
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar token={tokenval} />
-        <Router token={tokenval} setToken={setToken} />
+        <NavBar token={token} />
+        <Router token={token} setToken={setToken} />
       </BrowserRouter>
     </div>
   );

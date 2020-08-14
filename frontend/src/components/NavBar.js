@@ -21,7 +21,11 @@ export default function NavBar({token}){
         <Link style={{color: "pink"}} to="/createTeam">Create Team</Link>
         <br></br>
         <Link style={{color: "pink"}} to="/showTeam">Show Team</Link>
+        <br></br>
+        <Link style={{color: "pink"}} to="/compareTeams">Compare Teams</Link>
+        <br></br>
         </nav>
+        
         :
         <nav>
         <Link style={{color: "pink"}} to="/login">Login</Link>
