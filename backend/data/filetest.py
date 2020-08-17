@@ -32,7 +32,21 @@ with open('2019stats.html') as page:
 print(extensions)
 '''
 
-extensions = extensions[424:]
+def colorfnc(tm):
+    if tm == 'ATL' or tm == 'BOS' or tm == 'BRK' or tm == 'CHI':
+        return 'primary'
+    elif tm == 'CHO' or tm == 'CLE' or tm == 'DAL' or tm == 'DEN':
+        return 'secondary'
+    elif tm == 'DET' or tm == 'GSW' or tm == 'HOU' or tm == 'IND':
+        return 'success'
+    elif tm == 'IND' or tm == 'LAC' or tm == 'LAL' or tm == 'MEM':
+        return 'danger'
+    elif tm == 'MIA' or tm == 'MIL' or tm == 'MIN' or tm == 'NOP':
+        return 'warning'
+    elif tm == 'NYK' or tm == 'OKC' or tm == 'ORL' or tm == 'PHI':
+        return 'info'
+    return 'dark'
+
 
 for playerurl in extensions:
     totalurl = baseurl + playerurl
@@ -72,17 +86,28 @@ for playerurl in extensions:
     titleval = soup.find('title').text
     indexval = titleval.index('Stats')
     name = str(titleval[:indexval-1])
+    TSA = FGA + .44*FTA
+    TSpercent = 0
+    if TSA != 0: TSpercent = PTS/(2*TSA)
+    imgurl = soup.find('img', itemscope='image')['src']
+
+    dataval = soup.find_all('tr', id='per_game.2019')
+    arrval = dataval[-1].find_all('td')
+    TM = str(arrval[1].text)
+    color = colorfnc(TM)
     print(name + ' added')
     with sqlite3.connect(dbpath) as conn:
             cursor = conn.cursor()
             sql = """INSERT INTO players (
                      name, G, MP, FG, FGA, FGpercent, ThreeP, ThreePA,
                      ThreePercent, TwoP, TwoPA, TwoPercent, eFG, FT, FTA,
-                     FTpercent, ORB, DRB, TRB, AST, STL, BLK, TOV, PF, PTS
+                     FTpercent, ORB, DRB, TRB, AST, STL, BLK, TOV, PF, PTS,
+                     TSpercent, imgurl, TM, color
                      ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
-                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
             values = (name, G, MP, FG, FGA, FGpercent, ThreeP, ThreePA,
                      ThreePercent, TwoP, TwoPA, TwoPercent, eFG, FT, FTA,
-                     FTpercent, ORB, DRB, TRB, AST, STL, BLK, TOV, PF, PTS)
+                     FTpercent, ORB, DRB, TRB, AST, STL, BLK, TOV, PF, PTS,
+                     TSpercent, imgurl, TM, color)
             cursor.execute(sql, values)
-    time.sleep(15)
+    time.sleep(10)

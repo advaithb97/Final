@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from models.player import get_playerdata
-from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError, TeamExistingError
+from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError, TeamExistingError, VoteEntryExistingError
 
 app = Flask(__name__)
 CORS(app)
@@ -78,6 +78,7 @@ def login():
     return jsonify({"session_id": "", 
                     "username": ""})
 
+
 @app.route("/api/insert_result", methods=["POST"])
 def insert_result():
     # get data from request
@@ -90,7 +91,11 @@ def insert_result():
     # if the account exists:
     winteam = data.get("winteam")
     lossteam = data.get("lossteam")
-    account.new_result(winteam, lossteam)
+    try:
+        account.new_result(winteam, lossteam)
+    except VoteEntryExistingError:
+        return jsonify({"error": "Vote Entry Exists"})
+    return jsonify({"success":True})
 
 
 @app.route("/api/upvote", methods=["POST"])

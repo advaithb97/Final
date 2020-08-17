@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { postRequest } from './models';
+import { postRequest, playerScore } from './models';
 import PlayerElem from './PlayerElem';
 
 function compareTeams() {
@@ -68,21 +68,34 @@ function compareTeams() {
   const comparisonFnc = async () => {
     const token = sessionStorage.getItem("token");
     const compareData = async () => {
-        let totalpoints = 0;
-        let totalpoints2 = 0;
+        let totalscore1 = 0;
+        let totalscore2 = 0;
+
         for (let i = 0; i < team.length; i++) {
-            console.log(team[i]['PTS'])
-            console.log(team2[i]['PTS']);
-            totalpoints += team[i]['PTS'];
-            totalpoints2 += team2[i]['PTS'];
+            let PTS = team[i]['PTS'];
+            let TRB = team[i]['TRB'];
+            let AST = team[i]['AST'];
+            let STL = team[i]['STL'];
+            let BLK = team[i]['BLK'];
+            let TOV = team[i]['TOV'];
+            let TSpercent = team[i]['TS%'];
+            let PTS2 = team2[i]['PTS'];
+            let TRB2 = team2[i]['TRB'];
+            let AST2 = team2[i]['AST'];
+            let STL2 = team2[i]['STL'];
+            let BLK2 = team2[i]['BLK'];
+            let TOV2 = team2[i]['TOV'];
+            let TSpercent2 = team2[i]['TS%'];
+            let pScore1 = playerScore(PTS, TRB, AST, STL, BLK, TOV, TSpercent);
+            let pScore2 = playerScore(PTS2, TRB2, AST2, STL2, BLK2, TOV2, TSpercent2);
+            totalscore1 += pScore1;
+            totalscore2 += pScore2;
         }
-        console.log(totalpoints);
-        console.log(totalpoints2);
-        if (totalpoints > totalpoints2) {
+        if (totalscore1 > totalscore2) {
             setWinResult('team 1 wins');
             setWinTeam(teamName);
             setLossTeam(teamName2)
-        } else if (totalpoints < totalpoints2) {
+        } else if (totalscore1 < totalscore2) {
             setWinResult('team 2 wins');
             setWinTeam(teamName2);
             setLossTeam(teamName);

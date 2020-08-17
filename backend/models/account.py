@@ -20,6 +20,9 @@ class PlayerExistingError(Exception):
 class PlayerNotExistingError(Exception):
     pass
 
+class VoteEntryExistingError(Exception):
+    pass
+
 class Account:
 
     def __init__(self, username, password_hash, api_key, pk=None):
@@ -57,6 +60,18 @@ class Account:
         # Will need to hash our password
         with sqlite3.connect(self.dbpath) as conn:
             cursor = conn.cursor()
+
+            sql = """SELECT * FROM results WHERE winteam=? AND lossteam = ?"""
+            cursor.execute(sql, (winteam, lossteam))
+            entryvals = cursor.fetchone()
+            existing = False
+            if entryvals:
+                existing = True
+            
+            if existing:
+                print(player_pk, entryvals[2])
+                raise VoteEntryExistingError
+
             sql = """INSERT INTO results (
                      winteam, lossteam, upvotes, downvotes
                      ) VALUES(?, ?, ?, ?)"""

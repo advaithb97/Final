@@ -50,7 +50,11 @@ def schema(dbpath="nbabase.db"):
             BLK FLOAT,
             TOV FLOAT,
             PF FLOAT,
-            PTS FLOAT
+            PTS FLOAT,
+            TSpercent FLOAT,
+            imgurl VARCHAR(32),
+            TM VARCHAR(4),
+            color VARCHAR(16)
         );""")
 
 

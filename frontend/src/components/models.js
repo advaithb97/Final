@@ -30,6 +30,11 @@ export const getRequest = async (endpoint) => {
   return result;
 }
 
+export const playerScore = (PTS, TRB, AST, STL, BLK, TOV, TSpercent) => {
+  const val = PTS * TSpercent;
+  return val + TRB + AST + STL + BLK - TOV;
+}
+
 export const useStateWithSessionStorage = (key, initial) => {
   const [value, setValue] = useState(sessionStorage.getItem(key || initial));
 

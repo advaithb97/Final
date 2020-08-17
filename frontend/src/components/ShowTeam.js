@@ -14,6 +14,8 @@ function showTeam() {
   const [ASTarr, setASTarr] = useState([]);
   const [STLarr, setSTLarr] = useState([]);
   const [BLKarr, setBLKarr] = useState([]);
+  const [colorArr, setColorarr] = useState([]);
+  const [imgArr, setImgArr] = useState([]);
 
   const [playersArr, setPlayersArr] = useState([]);
 
@@ -89,7 +91,11 @@ function showTeam() {
       const TRB = team[i]['TRB']
       const STL = team[i]['STL']
       const BLK = team[i]['BLK']
-      const x = <PlayerElem name={name} PTS={PTS} TRB={TRB} AST={AST} STL={STL} BLK={BLK}/>
+      const color = team[i]['color']
+      const imgurl = team[i]['imgurl']
+      const tm = team[i]['TM']
+      const x = <PlayerElem name={name} PTS={PTS} TRB={TRB} AST={AST} 
+            STL={STL} BLK={BLK} color={color} imgurl={imgurl} team = {tm}/>
       copyArr.push(x);
     }
     setPlayersArr(copyArr);
