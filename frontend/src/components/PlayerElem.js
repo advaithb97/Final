@@ -9,7 +9,7 @@ export default function PlayerElem({name, PTS, TRB, AST, STL, BLK, color, imgurl
     <div>
 <center>
 <Card bg={color} style={{ width: '20rem' }}>
-  <Card.Img variant="top" src={imgurl}/>
+  <Card.Img variant="right" src={imgurl}/>
   <Card.Body>
     <Card.Title><h4>{name}</h4></Card.Title>
   </Card.Body>

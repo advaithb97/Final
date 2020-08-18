@@ -26,6 +26,10 @@ export default function EditTeam() {
 
   return (
     <div>
+      <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
     <input onChange={e => setTeamName(e.target.value)} placeholder="Enter a team name"/>
     <input onChange={e => setPlayerName(e.target.value)} placeholder="Enter a player name"/>
     <button onClick={evalData}>Insert</button>

@@ -27,6 +27,10 @@ export default function CreateTeam() {
 
   return (
     <div>
+      <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
     <input onChange={e => setTeamName(e.target.value)} placeholder="Enter a team name"/>
     <button onClick={evalData}>Create</button>
     <br></br>

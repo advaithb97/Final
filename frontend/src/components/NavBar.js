@@ -13,30 +13,53 @@ export default function NavBar({token}){
   return (
     <div>
       { boolval ? 
-        <nav>
-        <Link style={{color: "pink"}} to="/editTeam">Edit Team</Link>
-        <br></br>
-        <Link style={{color: "pink"}} to="/player">Player</Link>
-        <br></br>
-        <Link style={{color: "pink"}} to="/createTeam">Create Team</Link>
-        <br></br>
-        <Link style={{color: "pink"}} to="/showTeam">Show Team</Link>
-        <br></br>
-        <Link style={{color: "pink"}} to="/compareTeams">Compare Teams</Link>
-        <br></br>
-        <Link style={{color: "pink"}} to="/votesPage">Votes Page</Link>
-        <br></br>
-        </nav>
-        
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">NavBar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/editTeam">Edit Team<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/player">Player<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/createTeam">Create Team<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/showTeam">Show Team<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/compareTeams">Compare Teams<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/votesPage">Votes Page<span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
         :
-        <nav>
-        <Link style={{color: "pink"}} to="/login">Login</Link>
-        <br></br>
-        <Link style={{color: "pink"}} to="/signup">Signup</Link>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">NavBar</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/login">Login<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/signup">Signup<span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
       </nav>
       }
     </div>
-
 
     /** 
    <div>

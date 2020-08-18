@@ -103,8 +103,12 @@ function showTeam() {
 
   return (
     <div>
+      <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
       <button onClick={getTeams}>List Teams</button>
-      <p>teams: {teams}</p>
+      <h3>Teams: </h3>
       <div>{output}</div>
       <br></br>
       <br></br>

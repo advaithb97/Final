@@ -30,6 +30,10 @@ function Player() {
 
   return (
     <div>
+      <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
       <input onChange={e => setFirstName(e.target.value)} placeholder="Enter first name"/>
       <input onChange={e => setLastName(e.target.value)} placeholder="Enter last name"/>
       <button onClick={getPlayer}>Get Info</button>

@@ -27,8 +27,11 @@ export default function votesPage() {
 
   return (
     <div>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
     {votesArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
     </div>
   )
-
 }

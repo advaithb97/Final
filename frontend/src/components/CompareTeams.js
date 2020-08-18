@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { postRequest, playerScore } from './models';
 import PlayerElem from './PlayerElem';
+import DoublePlayer from './DoublePlayer';
 
 function compareTeams() {
   const [teams, setTeams] = useState([]);
@@ -67,10 +68,10 @@ function compareTeams() {
 
   const comparisonFnc = async () => {
     const token = sessionStorage.getItem("token");
+    viewAll();
+    let totalscore1 = 0;
+    let totalscore2 = 0;
     const compareData = async () => {
-        let totalscore1 = 0;
-        let totalscore2 = 0;
-
         for (let i = 0; i < team.length; i++) {
             let PTS = team[i]['PTS'];
             let TRB = team[i]['TRB'];
@@ -102,6 +103,8 @@ function compareTeams() {
         } else {setWinResult('tie');}
     }
     compareData();
+    console.log(totalscore1);
+    console.log(totalscore2);
     const data = await postRequest("insert_result", {winteam: teamName, 
                     lossteam: teamName2, token: token});
   }
@@ -159,10 +162,43 @@ function compareTeams() {
     setPlayersArr(copyArr);
   }
 
+
+  const viewAll = async () => {
+    let copyArr = [];
+    for (let i = 0; i < team.length; i++) {
+      const name = team[i]['name']
+      const PTS = team[i]['PTS']
+      const AST = team[i]['AST']
+      const TRB = team[i]['TRB']
+      const STL = team[i]['STL']
+      const BLK = team[i]['BLK']
+      const imgurl = team[i]['imgurl']
+      const tm = team[i]['TM']
+      const name2 = team2[i]['name']
+      const PTS2 = team2[i]['PTS']
+      const AST2 = team2[i]['AST']
+      const TRB2 = team2[i]['TRB']
+      const STL2 = team2[i]['STL']
+      const BLK2 = team2[i]['BLK']
+      const imgurl2 = team2[i]['imgurl']
+      const tm2 = team2[i]['TM']
+      const x = <div>
+      <DoublePlayer name={name} PTS={PTS} TRB={TRB} AST={AST} STL={STL} BLK={BLK} imgurl={imgurl} team={tm}
+         name2={name2} PTS2={PTS2} TRB2={TRB2} AST2={AST2} STL2={STL2} BLK2={BLK2} imgurl2={imgurl2} team2={tm2}   />
+      </div>
+      copyArr.push(x);
+    }
+    setPlayersArr(copyArr);
+  }
+
   return (
     <div>
+      <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
       <button onClick={getTeams}>List Teams</button>
-      <p>teams: {teams}</p>
+      <h3>Teams: </h3>
       <div>{output}</div>
       <br></br>
       <input onChange={e => setTeamName(e.target.value)} placeholder="Enter first team to show"/>
@@ -173,6 +209,7 @@ function compareTeams() {
       <br></br>
       {winResult}
       <br></br>
+      {playersArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
     </div>
   )
 }
