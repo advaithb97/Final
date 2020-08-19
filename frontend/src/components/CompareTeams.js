@@ -9,20 +9,10 @@ function compareTeams() {
   const [teamName, setTeamName] = useState("");
   const [team, setTeam] = useState([])
   const [teamOut, setTeamOut] = useState([]);
-  const [nameArr, setNameArr] = useState([]);
-  const [PTSarr, setPTSarr] = useState([]);
-  const [TRBarr, setTRBarr] = useState([]);
-  const [ASTarr, setASTarr] = useState([]);
-  const [STLarr, setSTLarr] = useState([]);
-  const [BLKarr, setBLKarr] = useState([]);
   
   const [teamName2, setTeamName2] = useState('');
   const [team2, setTeam2] = useState([]);
-  const [PTSarr2, setPTSarr2] = useState([]);
-  const [TRBarr2, setTRBarr2] = useState([]);
-  const [ASTarr2, setASTarr2] = useState([]);
-  const [STLarr2, setSTLarr2] = useState([]);
-  const [BLKarr2, setBLKarr2] = useState([]);
+
 
   const [winResult, setWinResult] = useState([]);
 
@@ -68,8 +58,6 @@ function compareTeams() {
 
   const comparisonFnc = async () => {
     const token = sessionStorage.getItem("token");
-    viewTeam();
-    viewTeam2();
     viewAll();
     let totalscore1 = 0;
     let totalscore2 = 0;

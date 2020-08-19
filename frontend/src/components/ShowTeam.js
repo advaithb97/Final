@@ -58,6 +58,30 @@ function showTeam() {
     setPlayersArr(copyArr);
   }
 
+  const seePlayers = async () => {
+    const token = sessionStorage.getItem("token");
+    const data = await postRequest("viewTeam", {teamname: teamName, token: token});
+    console.log(data);
+    const team = data['team'];
+    let copyArr = [];
+    for (let i = 0; i < team.length; i++) {
+      const name = team[i]['name'];
+      const PTS = team[i]['PTS'];
+      const AST = team[i]['AST'];
+      const TRB = team[i]['TRB'];
+      const STL = team[i]['STL'];
+      const BLK = team[i]['BLK'];
+      const color = team[i]['color'];
+      const imgurl = team[i]['imgurl'];
+      const tm = team[i]['TM'];
+      const TOV = team[i]['TOV'];
+      const x = <PlayerElem name={name} PTS={PTS} TRB={TRB} AST={AST} 
+            STL={STL} BLK={BLK} color={color} imgurl={imgurl} team={tm} TOV={TOV}/>
+      copyArr.push(x);
+    }
+    setPlayersArr(copyArr);
+  }
+
   return (
     <div>
     <br></br>
@@ -70,12 +94,12 @@ function showTeam() {
       <br></br>
       <br></br>
       <input onChange={e => setTeamName(e.target.value)} placeholder="Enter team to show"/>
-      <button onClick={viewTeam}>ViewTeam</button>
+      
       <br></br>
-      <button onClick={viewPlayers}>Check out Players</button>
+      <button onClick={seePlayers}>Check out Players</button>
       {playersArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
     </div>
   )
 }
-
+/**<button onClick={viewTeam}>ViewTeam</button> */
 export default showTeam;

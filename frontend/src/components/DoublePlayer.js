@@ -11,7 +11,7 @@ export default function DoublePlayer({name, PTS, TRB, AST, STL, BLK,
 <div class="container">
   <div class="card-columns d-flex justify-content-center">
   <Card bg='primary' style={{ width: '20rem' }}>
-  <Card.Img variant="top" src={imgurl}/>
+  <Card.Img variant="top" src={imgurl} style={{ width: '150px' }}/>
   <Card.Body>
     <Card.Title><h4>{name}</h4></Card.Title>
   </Card.Body>
@@ -28,7 +28,7 @@ export default function DoublePlayer({name, PTS, TRB, AST, STL, BLK,
 </Card>
 
 <Card bg='secondary' style={{ width: '20rem' }}>
-  <Card.Img variant="top" src={imgurl2}/>
+  <Card.Img variant="top" src={imgurl2} style={{ width: '150px' }}/>
   <Card.Body>
     <Card.Title><h4>{name2}</h4></Card.Title>
   </Card.Body>
