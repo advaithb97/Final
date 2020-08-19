@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 
-export default function PlayerElem({name, PTS, TRB, AST, STL, BLK, TOV, color, imgurl, team}) {
+export default function PlayerCard({name, PTS, TRB, AST, STL, BLK, TOV, color, imgurl, team}) {
   
   return (
     <div>

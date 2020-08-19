@@ -11,6 +11,7 @@ export default function Login({setToken}) {
     const getData = async () => {
         const data = await postRequest("login", {username: username, password: password});
         sessionStorage.setItem("token", data.session_id);
+        setToken(data.session_id);
         console.log(data);
     }
     getData();

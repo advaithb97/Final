@@ -68,6 +68,8 @@ function compareTeams() {
 
   const comparisonFnc = async () => {
     const token = sessionStorage.getItem("token");
+    viewTeam();
+    viewTeam2();
     viewAll();
     let totalscore1 = 0;
     let totalscore2 = 0;
@@ -107,59 +109,6 @@ function compareTeams() {
     console.log(totalscore2);
     const data = await postRequest("insert_result", {winteam: teamName, 
                     lossteam: teamName2, token: token});
-  }
-
-  const viewInfo = () => {
-    const playerData = async () => {
-        console.log(team);
-        let copyPTS = [];
-        let copyTRB = [];
-        let copyAST = [];
-        let copySTL = [];
-        let copyBLK = [];
-        let copyNames = [];
-        for (let i = 0; i < team.length; i++) {
-            console.log(i);
-            copyNames.push(team[i]['name']);
-            copyPTS.push(team[i]['PTS']);
-            copyTRB.push(team[i]['TRB']);
-            copyAST.push(team[i]['AST']);
-            copySTL.push(team[i]['STL']);
-            copyBLK.push(team[i]['BLK']);
-        }
-        console.log(copyPTS);
-        setNameArr(copyNames);
-        setPTSarr(copyPTS);
-        setTRBarr(copyTRB);
-        setASTarr(copyAST);
-        setSTLarr(copySTL);
-        setBLKarr(copyBLK);
-    }
-    playerData();
-  }
-
-  const viewArrs = () => {
-      console.log(nameArr);
-      console.log(PTSarr);
-      console.log(TRBarr);
-      console.log(ASTarr);
-      console.log(STLarr);
-      console.log(BLKarr);
-  }
-
-  const viewPlayers = async () => {
-    let copyArr = [];
-    for (let i = 0; i < team.length; i++) {
-      const name = team[i]['name']
-      const PTS = team[i]['PTS']
-      const AST = team[i]['AST']
-      const TRB = team[i]['TRB']
-      const STL = team[i]['STL']
-      const BLK = team[i]['BLK']
-      const x = <PlayerElem name={name} PTS={PTS} TRB={TRB} AST={AST} STL={STL} BLK={BLK}/>
-      copyArr.push(x);
-    }
-    setPlayersArr(copyArr);
   }
 
 

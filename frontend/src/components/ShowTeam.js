@@ -8,16 +8,9 @@ function showTeam() {
   const [teamName, setTeamName] = useState("");
   const [team, setTeam] = useState([])
   const [teamOut, setTeamOut] = useState([]);
-  const [nameArr, setNameArr] = useState([]);
-  const [PTSarr, setPTSarr] = useState([]);
-  const [TRBarr, setTRBarr] = useState([]);
-  const [ASTarr, setASTarr] = useState([]);
-  const [STLarr, setSTLarr] = useState([]);
-  const [BLKarr, setBLKarr] = useState([]);
-  const [colorArr, setColorarr] = useState([]);
-  const [imgArr, setImgArr] = useState([]);
 
   const [playersArr, setPlayersArr] = useState([]);
+  const [nonEmpty, setNonEmpty] = useState(false);
 
 
   const getTeams = () => {
@@ -27,6 +20,7 @@ function showTeam() {
         const teamvals = data['teams'];
         console.log(teamvals);
         setTeams(teamvals);
+        setNonEmpty(true);
         setOutput(teamvals.map((elemval) => <p key={elemval}>{elemval}</p>));
     }
     getData();
@@ -43,59 +37,22 @@ function showTeam() {
     await viewData();
   }
 
-  const viewInfo = () => {
-    const playerData = async () => {
-        console.log(team);
-        let copyPTS = [];
-        let copyTRB = [];
-        let copyAST = [];
-        let copySTL = [];
-        let copyBLK = [];
-        let copyNames = [];
-        for (let i = 0; i < team.length; i++) {
-            console.log(i);
-            copyNames.push(team[i]['name']);
-            copyPTS.push(team[i]['PTS']);
-            copyTRB.push(team[i]['TRB']);
-            copyAST.push(team[i]['AST']);
-            copySTL.push(team[i]['STL']);
-            copyBLK.push(team[i]['BLK']);
-        }
-        console.log(copyPTS);
-        setNameArr(copyNames);
-        setPTSarr(copyPTS);
-        setTRBarr(copyTRB);
-        setASTarr(copyAST);
-        setSTLarr(copySTL);
-        setBLKarr(copyBLK);
-    }
-    playerData();
-  }
-
-  const viewArrs = () => {
-      console.log(nameArr);
-      console.log(PTSarr);
-      console.log(TRBarr);
-      console.log(ASTarr);
-      console.log(STLarr);
-      console.log(BLKarr);
-  }
-
   const viewPlayers = async () => {
     await viewTeam();
     let copyArr = [];
     for (let i = 0; i < team.length; i++) {
-      const name = team[i]['name']
-      const PTS = team[i]['PTS']
-      const AST = team[i]['AST']
-      const TRB = team[i]['TRB']
-      const STL = team[i]['STL']
-      const BLK = team[i]['BLK']
-      const color = team[i]['color']
-      const imgurl = team[i]['imgurl']
-      const tm = team[i]['TM']
+      const name = team[i]['name'];
+      const PTS = team[i]['PTS'];
+      const AST = team[i]['AST'];
+      const TRB = team[i]['TRB'];
+      const STL = team[i]['STL'];
+      const BLK = team[i]['BLK'];
+      const color = team[i]['color'];
+      const imgurl = team[i]['imgurl'];
+      const tm = team[i]['TM'];
+      const TOV = team[i]['TOV'];
       const x = <PlayerElem name={name} PTS={PTS} TRB={TRB} AST={AST} 
-            STL={STL} BLK={BLK} color={color} imgurl={imgurl} team = {tm}/>
+            STL={STL} BLK={BLK} color={color} imgurl={imgurl} team={tm} TOV={TOV}/>
       copyArr.push(x);
     }
     setPlayersArr(copyArr);
@@ -103,12 +60,12 @@ function showTeam() {
 
   return (
     <div>
-      <br></br>
+    <br></br>
     <br></br>
     <br></br>
     <br></br>
       <button onClick={getTeams}>List Teams</button>
-      <h3>Teams: </h3>
+      { nonEmpty && <h3>Teams: </h3> }
       <div>{output}</div>
       <br></br>
       <br></br>

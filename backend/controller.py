@@ -14,9 +14,10 @@ def player_data(first_name, last_name):
     name = first_name + ' ' + last_name
     player_vals = get_playerdata(name)
     print(player_vals)
-    return jsonify({"points": player_vals['PTS'], "rebounds": player_vals['TRB'], 
+    return jsonify({ "name":player_vals['name'], "points": player_vals['PTS'], "rebounds": player_vals['TRB'], 
         "assists": player_vals['AST'], "steals": player_vals['STL'], 'efg': player_vals['eFG'],
-        "blocks": player_vals['BLK'], "turnovers":player_vals['TOV']})
+        "blocks": player_vals['BLK'], "turnovers":player_vals['TOV'], "color":player_vals['color'],
+        "imgurl":player_vals['imgurl'], 'team':player_vals['TM']})
 
 
 @app.route("/api/insert", methods=["POST"])
