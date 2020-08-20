@@ -4,7 +4,7 @@ import sqlite3
 def schema(dbpath="nbabase.db"):
     with sqlite3.connect(dbpath) as conn:
         cur = conn.cursor()
-
+        
         cur.execute("""
         CREATE TABLE users (
             pk INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -67,6 +67,15 @@ def schema(dbpath="nbabase.db"):
             downvotes INTEGER
         );""")
 
+        cur.execute("""
+        CREATE TABLE friends (
+            pk INTEGER PRIMARY KEY AUTOINCREMENT,
+            username VARCHAR(25),
+            friendname VARCHAR(25),
+            outgoing BOOLEAN,
+            is_friend BOOLEAN
+        );""")
+        
 
 if __name__ == "__main__":
     schema()

@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from models.player import get_playerdata
-from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError, TeamExistingError, VoteEntryExistingError
+from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError, TeamExistingError, VoteEntryExistingError, FriendExistingError
 
 app = Flask(__name__)
 CORS(app)
@@ -195,3 +195,76 @@ def view_team():
     tplayers = account.team_players(teamname)
     print(tplayers)
     return jsonify({"team": tplayers})
+
+
+@app.route("/api/friendRequest", methods=["POST"])
+def friend_request():
+    # use token to authenticate user
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    friendname = data.get("friendname")
+    try:
+        account.friend_request(friendname)
+    except FriendExistingError:
+        return jsonify({"error": "you already have this friend"})
+    return jsonify({"success":True})
+
+
+@app.route("/api/showRequests", methods=["POST"])
+def my_requests():
+    # use token to authenticate user
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    friend_requests = account.show_requests()
+    return jsonify({"friend requests": friend_requests})
+
+
+@app.route("/api/showFriends", methods=["POST"])
+def my_friends():
+    # use token to authenticate user
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    my_friends = account.all_friends()
+    return jsonify({"friends": my_friends})
+
+
+@app.route("/api/acceptFriend", methods=["POST"])
+def accept_friend():
+    # get data from request
+    data = request.get_json()
+    # TODO: see if account exists
+    account = Account.api_authenticate(data.get("token"))
+    friendname = data.get("friendname")
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    account.accept_friend(friendname)
+    return jsonify({"success":True})
+
+
+@app.route("/api/rejectFriend", methods=["POST"])
+def reject_friend():
+    # get data from request
+    data = request.get_json()
+    # TODO: see if account exists
+    account = Account.api_authenticate(data.get("token"))
+    friendname = data.get("friendname")
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    account.reject_friend(friendname)
+    return jsonify({"success":True})

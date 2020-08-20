@@ -23,6 +23,10 @@ class PlayerNotExistingError(Exception):
 class VoteEntryExistingError(Exception):
     pass
 
+class FriendExistingError(Exception):
+    pass
+
+
 class Account:
 
     def __init__(self, username, password_hash, api_key, pk=None):
@@ -200,6 +204,7 @@ class Account:
                 voteslist.append(xVal)
             return voteslist
 
+
     def team_players(self, teamname):
         with sqlite3.connect(dbpath) as conn:
             cursor = conn.cursor()
@@ -215,6 +220,77 @@ class Account:
                 playerinfo = get_playerinfo(pkey)
                 playerlist.append(playerinfo)
             return playerlist
+
+
+    def friend_request(self, friendname):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+
+            sql = """SELECT * FROM friends WHERE username = ? AND friendname=? AND is_friend=?"""
+            cursor.execute(sql, (self.username, friendname, 1))
+            entries = cursor.fetchone()
+            if not entries is None:
+                raise FriendExistingError
+
+            sql = """SELECT * FROM friends WHERE friendname = ? AND username=? AND is_friend=?"""
+            cursor.execute(sql, (self.username, friendname, 1))
+            entries = cursor.fetchone()
+            if not entries is None:
+                raise FriendExistingError
+
+            sql = """INSERT INTO friends (
+                     username, friendname, outgoing, is_friend
+                     ) VALUES(?, ?, ?, ?)"""
+            values = (self.username, friendname, 1, 0)
+            cursor.execute(sql, values)
+            return True
+
+
+    def show_requests(self):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT username FROM friends WHERE friendname=? AND outgoing=?"""
+            cursor.execute(sql, (self.username, 1))
+            entries = cursor.fetchall()
+            xlist = []
+            for elem in entries:
+                xval = elem[0]
+                xlist.append(xval)
+            return xlist
+
+
+    def all_friends(self):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT friendname FROM friends WHERE username=? AND is_friend=?"""
+            cursor.execute(sql, (self.username, 1))
+            entries = cursor.fetchall()
+            xlist = []
+            for elem in entries:
+                xval = elem[0]
+                xlist.append(xval)
+            sql = """SELECT username FROM friends WHERE friendname=? AND is_friend=?"""
+            cursor.execute(sql, (self.username, 1))
+            entries = cursor.fetchall()
+            for elem in entries:
+                xval = elem[0]
+                xlist.append(xval)
+            return xlist
+
+
+    def accept_friend(self, friendname):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """UPDATE friends SET outgoing=?, is_friend = ? WHERE username=? AND friendname=?"""
+            cursor.execute(sql, (0, 1, friendname, self.username))
+
+
+    def reject_friend(self, friendname):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """DELETE FROM friends WHERE username = ? AND friendname = ?"""
+            values = (friendname, self.username)
+            cursor.execute(sql, values)
             
 
     @classmethod

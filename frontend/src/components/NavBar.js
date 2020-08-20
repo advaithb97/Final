@@ -39,6 +39,9 @@ export default function NavBar({token}){
             <li class="nav-item active">
               <a class="nav-link" href="/votesPage">Votes Page<span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/friendsPage">Friends Page<span class="sr-only">(current)</span></a>
+            </li>
           </ul>
         </div>
       </nav>
