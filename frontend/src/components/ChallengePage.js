@@ -12,6 +12,7 @@ export default function ChallengePage() {
         const viewData = async () => {
             const token = sessionStorage.getItem("token");
             const data = await postRequest("showChallenges", {token: token});
+            console.log(data);
             const requestVals = data['challenge requests'];
             const data2 = await postRequest("showFriends", {token: token});
             const friendVals = data2['friends'];
@@ -22,12 +23,13 @@ export default function ChallengePage() {
                 const friendTeamName = requestVals[i]['friendteamname'];
                 const x = <ChallengeElem friendname={friendname} friendTeamName={friendTeamName}/>;
                 copyArr.push(x);
+                console.log(x);
             }
             for (let i = 0; i < friendVals.length; i++) {
                 const fname = friendVals[i];
                 copyArr2.push(fname);
             }
-            console.log(copyArr2);
+            console.log(copyArr);
             setRequestsArr(copyArr);
             setFriendsArr(copyArr2);
         }
@@ -42,6 +44,33 @@ export default function ChallengePage() {
         }
         evalFnc();
     }
+
+  const checkFnc = () => {
+      const viewData = async () => {
+        const token = sessionStorage.getItem("token");
+        const data = await postRequest("showChallenges", {token: token});
+        console.log(data);
+        const requestVals = data['challenge requests'];
+        const data2 = await postRequest("showFriends", {token: token});
+        const friendVals = data2['friends'];
+        let copyArr = [];
+        let copyArr2 = [];
+        for (let i = 0; i < requestVals.length; i++) {
+            const friendname = requestVals[i]['friendname'];
+            const friendTeamName = requestVals[i]['friendteamname'];
+            const x = <ChallengeElem friendname={friendname} friendTeamName={friendTeamName}/>;
+            copyArr.push(x);
+        }
+        for (let i = 0; i < friendVals.length; i++) {
+            const fname = friendVals[i];
+            copyArr2.push(fname);
+        }
+        console.log(copyArr2);
+        setRequestsArr(copyArr);
+        setFriendsArr(copyArr2);
+      }
+      viewData();
+  }
 
 
   return (
@@ -62,3 +91,5 @@ export default function ChallengePage() {
     </div>
   )
 }
+
+/**{requestsArr.map((elemval, index) => <div key={index}>{elemval}</div>)}*/

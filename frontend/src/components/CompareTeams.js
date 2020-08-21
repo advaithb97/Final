@@ -14,12 +14,15 @@ function compareTeams() {
   const [team2, setTeam2] = useState([]);
 
 
-  const [winResult, setWinResult] = useState([]);
+  const [winResult, setWinResult] = useState("");
 
   const [playersArr, setPlayersArr] = useState([]);
 
   const [winTeam, setWinTeam] = useState("");
   const [lossTeam, setLossTeam] = useState("");
+
+  const [score1, setScore1] = useState(0);
+  const [score2, setScore2] = useState(0);
 
 
   const getTeams = () => {
@@ -94,7 +97,9 @@ function compareTeams() {
     }
     compareData();
     console.log(totalscore1);
+    setScore1(totalscore1);
     console.log(totalscore2);
+    setScore2(totalscore2);
     const data = await postRequest("insert_result", {winteam: teamName, 
                     lossteam: teamName2, token: token});
   }
@@ -145,6 +150,7 @@ function compareTeams() {
       <button onClick={comparisonFnc}>Compare Teams</button>
       <br></br>
       {winResult}
+      <p>{teamName} Score: {score1}, {teamName2} Score: {score2}</p>
       <br></br>
       {playersArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
     </div>

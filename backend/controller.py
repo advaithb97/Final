@@ -8,6 +8,8 @@ CORS(app)
 
 #print(get_playerdata(get_playerurl("Steven", "Adams")))
 
+import sqlite3
+from models.player import get_playerinfo
 dbpath = "data/nbabase.db"
 
 
@@ -300,6 +302,7 @@ def my_challenges():
         return jsonify({"some error": "error here"})
     # get data from request
     # if the account exists:
+    print('HERE')
     my_challenges = account.all_challenges()
     return jsonify({"challenge requests": my_challenges})
 
@@ -328,7 +331,9 @@ def confirm_challenge():
     account = Account.api_authenticate(data.get("token"))
     teamname = data.get("teamname")
     friendname = data.get("friendname")
+    print(friendname)
     friendteam = data.get("friendteam")
+    print(friendteam)
     if not account:
         return jsonify({"some error": "error here"})
     # get data from request
@@ -336,21 +341,18 @@ def confirm_challenge():
     friend_pk = ''
     with sqlite3.connect(dbpath) as conn:
             cursor = conn.cursor()
-            sql = """SELECT * FROM users WHERE name=?"""
+            sql = """SELECT * FROM users WHERE username=?"""
             cursor.execute(sql, (friendname,))
             entries = cursor.fetchone()
             friend_pk = entries[0]
+            print(friend_pk)
     team1 = grab_team(account.pk, teamname)
     team2 = grab_team(friend_pk, friendteam)
+    print(team2)
     return jsonify({"team1":team1, 'team2':team2})
 
 
 def grab_team(user_pk, teamname):
-    data = request.get_json()
-    account = Account.api_authenticate(data.get("token"))
-    teamname = data.get("teamname")
-    if not account:
-        return jsonify({"some error": "error here"})
     with sqlite3.connect(dbpath) as conn:
             cursor = conn.cursor()
             sql = """SELECT player_pk FROM teams WHERE user_pk=? and team_name = ?"""
@@ -365,3 +367,5 @@ def grab_team(user_pk, teamname):
                 playerinfo = get_playerinfo(pkey)
                 playerlist.append(playerinfo)
             return playerlist
+
+        

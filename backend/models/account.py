@@ -79,7 +79,6 @@ class Account:
                 existing = True
             
             if existing:
-                print(player_pk, entryvals[2])
                 raise VoteEntryExistingError
 
             sql = """INSERT INTO results (
@@ -306,7 +305,11 @@ class Account:
             sql = """SELECT * FROM friends WHERE friendname = ? AND username=? AND is_friend=?"""
             cursor.execute(sql, (self.username, friendname, 1))
             entries = cursor.fetchone()
-            if entries is None:
+
+            sql = """SELECT * FROM friends WHERE username = ? AND friendname=? AND is_friend=?"""
+            cursor.execute(sql, (self.username, friendname, 1))
+            entries2 = cursor.fetchone()
+            if entries is None and entries2 is None:
                 raise NotFriendError
 
             sql = """SELECT * FROM challenges WHERE username=? AND friendname=? AND teamname=?"""
@@ -325,7 +328,7 @@ class Account:
     def all_challenges(self):
         with sqlite3.connect(self.dbpath) as conn:
             cursor = conn.cursor()
-            sql = """SELECT username, teamname FROM challenges WHERE friendname=?"""
+            sql = """SELECT * FROM challenges WHERE friendname=?"""
             cursor.execute(sql, (self.username,))
             entries = cursor.fetchall()
             xlist = []
@@ -339,7 +342,7 @@ class Account:
     def delete_challenge(self, friendname, friendteam):
         with sqlite3.connect(self.dbpath) as conn:
             cursor = conn.cursor()
-            sql = """DELETE FROM challenges WHERE username = ? AND friendname = ? AND friendteam = ?"""
+            sql = """DELETE FROM challenges WHERE username = ? AND friendname = ? AND teamname = ?"""
             values = (friendname, self.username, friendteam)
             cursor.execute(sql, values)
 

@@ -9,8 +9,9 @@ def testschema(dbpath="nbabase.db"):
             pk INTEGER PRIMARY KEY AUTOINCREMENT,
             username VARCHAR(25),
             friendname VARCHAR(25),
-            teamname VARCHAR(25),
+            teamname VARCHAR(25)
         );""")
 
 
+if __name__ == "__main__":
     testschema()
