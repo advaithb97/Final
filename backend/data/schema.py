@@ -75,6 +75,15 @@ def schema(dbpath="nbabase.db"):
             outgoing BOOLEAN,
             is_friend BOOLEAN
         );""")
+
+        cur.execute("""
+        CREATE TABLE challenges (
+            pk INTEGER PRIMARY KEY AUTOINCREMENT,
+            username VARCHAR(25),
+            friendname VARCHAR(25),
+            teamname VARCHAR(25),
+            outgoing BOOLEAN,
+        );""")
         
 
 if __name__ == "__main__":

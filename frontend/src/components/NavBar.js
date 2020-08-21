@@ -37,10 +37,13 @@ export default function NavBar({token}){
               <a class="nav-link" href="/compareTeams">Compare Teams<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="/votesPage">Votes Page<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/votesPage">Votes<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="/friendsPage">Friends Page<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/friendsPage">Friends<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/challengePage">Challenge<span class="sr-only">(current)</span></a>
             </li>
           </ul>
         </div>

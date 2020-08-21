@@ -8,7 +8,8 @@ import EditTeam from './EditTeam';
 import ShowTeam from './ShowTeam';
 import CompareTeams from './CompareTeams';
 import VotesPage from './VotesPage';
-import FriendsPage from './FriendsPage'
+import FriendsPage from './FriendsPage';
+import ChallengePage from './ChallengePage';
 import Home from './Home';
 
 function Router ({ token, setToken }) {
@@ -29,6 +30,7 @@ function Router ({ token, setToken }) {
           <Route exact path="/compareTeams" component={CompareTeams} />
           <Route exact path="/votesPage" component={VotesPage} />
           <Route exact path="/friendsPage" component={FriendsPage} />
+          <Route exact path="/challengePage" component={ChallengePage} />
         </div>
         :
         <div>

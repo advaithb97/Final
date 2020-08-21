@@ -19,8 +19,8 @@ export default function DoublePlayer({name, PTS, TRB, AST, STL, BLK,
     <ListGroupItem>points: {PTS}</ListGroupItem>
     <ListGroupItem>rebounds: {TRB}</ListGroupItem>
     <ListGroupItem>assists: {AST}</ListGroupItem>
-    <ListGroupItem>rebounds: {STL}</ListGroupItem>
-    <ListGroupItem>rebounds: {BLK}</ListGroupItem>
+    <ListGroupItem>steals: {STL}</ListGroupItem>
+    <ListGroupItem>blocks: {BLK}</ListGroupItem>
   </ListGroup>
   <Card.Body>
     <Card.Text>Team: {team}</Card.Text>
@@ -36,8 +36,8 @@ export default function DoublePlayer({name, PTS, TRB, AST, STL, BLK,
     <ListGroupItem>points: {PTS2}</ListGroupItem>
     <ListGroupItem>rebounds: {TRB2}</ListGroupItem>
     <ListGroupItem>assists: {AST2}</ListGroupItem>
-    <ListGroupItem>rebounds: {STL2}</ListGroupItem>
-    <ListGroupItem>rebounds: {BLK2}</ListGroupItem>
+    <ListGroupItem>steals: {STL2}</ListGroupItem>
+    <ListGroupItem>blocks: {BLK2}</ListGroupItem>
   </ListGroup>
   <Card.Body>
     <Card.Text>Team: {team2}</Card.Text>

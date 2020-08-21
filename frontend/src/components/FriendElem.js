@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { postRequest } from './models';
 
 
-export default function VoteElem({friendname}) {
+export default function FriendElem({friendname}) {
 
   const accept = () => {
       const evalUp = async () => {

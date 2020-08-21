@@ -19,8 +19,8 @@ export default function PlayerCard({name, PTS, TRB, AST, STL, BLK, TOV, color, i
     <ListGroupItem>points: {PTS}</ListGroupItem>
     <ListGroupItem>rebounds: {TRB}</ListGroupItem>
     <ListGroupItem>assists: {AST}</ListGroupItem>
-    <ListGroupItem>rebounds: {STL}</ListGroupItem>
-    <ListGroupItem>rebounds: {BLK}</ListGroupItem>
+    <ListGroupItem>steals: {STL}</ListGroupItem>
+    <ListGroupItem>blocks: {BLK}</ListGroupItem>
     <ListGroupItem>turnovers: {TOV}</ListGroupItem>
   </ListGroup>
   <Card.Body>

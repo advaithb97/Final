@@ -26,6 +26,12 @@ class VoteEntryExistingError(Exception):
 class FriendExistingError(Exception):
     pass
 
+class ChallengeExistingError(Exception):
+    pass
+
+class NotFriendError(Exception):
+    pass
+
 
 class Account:
 
@@ -292,6 +298,50 @@ class Account:
             values = (friendname, self.username)
             cursor.execute(sql, values)
             
+
+    def challenge_request(self, friendname, teamname):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+
+            sql = """SELECT * FROM friends WHERE friendname = ? AND username=? AND is_friend=?"""
+            cursor.execute(sql, (self.username, friendname, 1))
+            entries = cursor.fetchone()
+            if entries is None:
+                raise NotFriendError
+
+            sql = """SELECT * FROM challenges WHERE username=? AND friendname=? AND teamname=?"""
+            cursor.execute(sql, (self.username, friendname, teamname))
+            entries = cursor.fetchone()
+            if not entries is None:
+                raise ChallengeExistingError
+
+            sql = """INSERT INTO challenges (
+                     username, friendname, teamname
+                     ) VALUES(?, ?, ?)"""
+            values = (self.username, friendname, teamname)
+            cursor.execute(sql, values)
+            return True
+
+    def all_challenges(self):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT username, teamname FROM challenges WHERE friendname=?"""
+            cursor.execute(sql, (self.username,))
+            entries = cursor.fetchall()
+            xlist = []
+            for elem in entries:
+                output = {}
+                output['friendname'] = elem[1]
+                output['friendteamname'] = elem[3]
+                xlist.append(output)
+            return xlist
+
+    def delete_challenge(self, friendname, friendteam):
+        with sqlite3.connect(self.dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """DELETE FROM challenges WHERE username = ? AND friendname = ? AND friendteam = ?"""
+            values = (friendname, self.username, friendteam)
+            cursor.execute(sql, values)
 
     @classmethod
     def upvote(cls, upvotes, winteam, lossteam):

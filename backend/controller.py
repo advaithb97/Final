@@ -1,12 +1,14 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from models.player import get_playerdata
-from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError, TeamExistingError, VoteEntryExistingError, FriendExistingError
+from models.account import Account, InvalidPlayerError, InvalidTeamError, PlayerExistingError, PlayerNotExistingError, TeamExistingError, VoteEntryExistingError, FriendExistingError, ChallengeExistingError, NotFriendError
 
 app = Flask(__name__)
 CORS(app)
 
 #print(get_playerdata(get_playerurl("Steven", "Adams")))
+
+dbpath = "data/nbabase.db"
 
 
 @app.route("/api/player/<first_name>/<last_name>", methods=["GET"])
@@ -268,3 +270,98 @@ def reject_friend():
     # if the account exists:
     account.reject_friend(friendname)
     return jsonify({"success":True})
+
+
+@app.route("/api/challengeRequest", methods=["POST"])
+def challenge_request():
+    # use token to authenticate user
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    friendname = data.get("friendname")
+    teamname = data.get("teamname")
+    try:
+        account.challenge_request(friendname, teamname)
+    except NotFriendError:
+        return jsonify({"error": "you can only challenge friends"})
+    except ChallengeExistingError:
+        return jsonify({"error": "you already made this challenge"})
+    return jsonify({"success":True})
+
+@app.route("/api/showChallenges", methods=["POST"])
+def my_challenges():
+    # use token to authenticate user
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    my_challenges = account.all_challenges()
+    return jsonify({"challenge requests": my_challenges})
+
+
+@app.route("/api/deleteChallenge", methods=["POST"])
+def delete_challenge():
+    # get data from request
+    data = request.get_json()
+    # TODO: see if account exists
+    account = Account.api_authenticate(data.get("token"))
+    friendname = data.get("friendname")
+    friendteam = data.get("friendteam")
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    account.delete_challenge(friendname, friendteam)
+    return jsonify({"success":True})
+
+
+@app.route("/api/confirmChallenge", methods=["POST"])
+def confirm_challenge():
+    # get data from request
+    data = request.get_json()
+    # TODO: see if account exists
+    account = Account.api_authenticate(data.get("token"))
+    teamname = data.get("teamname")
+    friendname = data.get("friendname")
+    friendteam = data.get("friendteam")
+    if not account:
+        return jsonify({"some error": "error here"})
+    # get data from request
+    # if the account exists:
+    friend_pk = ''
+    with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT * FROM users WHERE name=?"""
+            cursor.execute(sql, (friendname,))
+            entries = cursor.fetchone()
+            friend_pk = entries[0]
+    team1 = grab_team(account.pk, teamname)
+    team2 = grab_team(friend_pk, friendteam)
+    return jsonify({"team1":team1, 'team2':team2})
+
+
+def grab_team(user_pk, teamname):
+    data = request.get_json()
+    account = Account.api_authenticate(data.get("token"))
+    teamname = data.get("teamname")
+    if not account:
+        return jsonify({"some error": "error here"})
+    with sqlite3.connect(dbpath) as conn:
+            cursor = conn.cursor()
+            sql = """SELECT player_pk FROM teams WHERE user_pk=? and team_name = ?"""
+            cursor.execute(sql, (user_pk, teamname))
+            pklist = cursor.fetchall()
+            playerlist = []
+            pklist = pklist[1:]
+            print(pklist)
+            for primary_key in pklist:
+                print(primary_key)
+                pkey = primary_key[0]
+                playerinfo = get_playerinfo(pkey)
+                playerlist.append(playerinfo)
+            return playerlist
