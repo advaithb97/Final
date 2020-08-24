@@ -45,6 +45,9 @@ export default function NavBar({token}){
             <li class="nav-item active">
               <a class="nav-link" href="/challengePage">Challenge<span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/logout">Logout<span class="sr-only">(current)</span></a>
+            </li>
           </ul>
         </div>
       </nav>

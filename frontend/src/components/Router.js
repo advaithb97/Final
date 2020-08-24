@@ -10,6 +10,7 @@ import CompareTeams from './CompareTeams';
 import VotesPage from './VotesPage';
 import FriendsPage from './FriendsPage';
 import ChallengePage from './ChallengePage';
+import Logout from './Logout';
 import Home from './Home';
 
 function Router ({ token, setToken }) {
@@ -31,6 +32,11 @@ function Router ({ token, setToken }) {
           <Route exact path="/votesPage" component={VotesPage} />
           <Route exact path="/friendsPage" component={FriendsPage} />
           <Route exact path="/challengePage" component={ChallengePage} />
+
+          <Route exact path="/logout" >
+            <Logout setToken={setToken}/>
+          </Route>
+
         </div>
         :
         <div>
