@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { postRequest } from './models';
+import Player from './Player';
 
 
 export default function EditTeam() {
@@ -26,18 +27,34 @@ export default function EditTeam() {
 
   return (
     <div>
-      <br></br>
     <br></br>
     <br></br>
     <br></br>
-    <input onChange={e => setTeamName(e.target.value)} placeholder="Enter a team name"/>
-    <input onChange={e => setPlayerName(e.target.value)} placeholder="Enter a player name"/>
-    <button onClick={evalData}>Insert</button>
+    <br></br>
+    <center>
+    <h4>Insert Player</h4>
+    <label for="inputTeam" class="sr-only">Team Name</label>
+      <input type="text" id="inputTeam" class="form-control" placeholder="Team Name" style={{ width: '18rem' }} 
+          onChange={e => setTeamName(e.target.value)} required autofocus/>
+    <label for="inputPlayer" class="sr-only">Player Name</label>
+      <input type="text" id="inputPlayer" class="form-control" placeholder="Player Name" style={{ width: '18rem' }} 
+          onChange={e => setPlayerName(e.target.value)} required autofocus/>
+    <button type="button" class="btn btn-success" onClick={evalData}>Insert</button>
+
     <br></br>
     <br></br>
-    <input onChange={e => setTeamName(e.target.value)} placeholder="Enter a team name"/>
-    <input onChange={e => setPlayerName(e.target.value)} placeholder="Enter a player name"/>
-    <button onClick={deletePlayer}>Delete</button>
+    <br></br>
+    <br></br>
+    <h4>Delete Player</h4>
+    <label for="inputTeam" class="sr-only">Team Name</label>
+      <input type="text" id="inputTeam" class="form-control" placeholder="Team Name" style={{ width: '18rem' }} 
+          onChange={e => setTeamName(e.target.value)} required autofocus/>
+    <label for="inputPlayer" class="sr-only">Player Name</label>
+      <input type="text" id="inputPlayer" class="form-control" placeholder="Player Name" style={{ width: '18rem' }} 
+          onChange={e => setPlayerName(e.target.value)} required autofocus/>
+    <button type="button" class="btn btn-danger" onClick={deletePlayer}>Delete</button>
+    <Player></Player>
+    </center>
     </div>
   )
 }

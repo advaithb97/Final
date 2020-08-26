@@ -20,7 +20,7 @@ export default function ChallengeElem({friendname, friendTeamName}) {
       const x = <ChallengeCompare team={team1} team2={team2} teamName={teamName} teamName2={friendTeamName}/>
       setChall(x);
       console.log(x);
-      /**const datax = await postRequest("deleteChallenge", {friendname: friendname, friendteam: friendTeamName, token: token});*/
+      const datax = await postRequest("deleteChallenge", {friendname: friendname, friendteam: friendTeamName, token: token});
     }
     evalChallenge();
 }

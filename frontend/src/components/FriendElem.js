@@ -22,7 +22,7 @@ export default function FriendElem({friendname}) {
 
   return (
     <div>
-      <p>{friendname}  <button onClick={accept}>Accept Friend</button>  <button onClick={reject}>Reject Friend</button></p>
+      <p>{friendname}  <button type="button" class="btn btn-primary" onClick={accept}>Accept Friend</button>   <button type="button" class="btn btn-danger" onClick={reject}>Reject Friend</button></p>
       <br></br>
     </div>
   )

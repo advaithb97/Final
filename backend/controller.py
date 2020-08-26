@@ -197,7 +197,6 @@ def view_team():
     if not account:
         return jsonify({"some error": "error here"})
     tplayers = account.team_players(teamname)
-    print(tplayers)
     return jsonify({"team": tplayers})
 
 

@@ -63,13 +63,7 @@ function compareTeams() {
 
   const comparisonFnc = async () => {
     const token = sessionStorage.getItem("token");
-    const data = await postRequest("viewTeam", {teamname: teamName, token: token});
-    const team = data['team'];
-    console.log(team);
-    const dataX = await postRequest("viewTeam", {teamname: teamName2, token: token});
-    const team2 = dataX['team'];
-    console.log(team2);
-    viewAll(team, team2);
+    viewAll();
     let totalscore1 = 0;
     let totalscore2 = 0;
     let win = teamName;
@@ -96,11 +90,11 @@ function compareTeams() {
             totalscore2 += pScore2;
         }
         if (totalscore1 > totalscore2) {
-            setWinResult(teamName + ' wins');
+            setWinResult('team 1 wins');
             setWinTeam(teamName);
             setLossTeam(teamName2);
         } else if (totalscore1 < totalscore2) {
-            setWinResult(teamName2 + ' wins');
+            setWinResult('team 2 wins');
             setWinTeam(teamName2);
             setLossTeam(teamName);
             win = teamName2;
@@ -112,12 +106,12 @@ function compareTeams() {
     setScore1(totalscore1);
     console.log(totalscore2);
     setScore2(totalscore2);
-    const data2 = await postRequest("insert_result", {winteam: win, 
-                    lossteam: loss, token: token});
+    const data = await postRequest("insert_result", {winteam: win, 
+                    lossteam: teamName2, token: token});
   }
 
 
-  const viewAll = async (team, team2) => {
+  const viewAll = async () => {
     let copyArr = [];
     for (let i = 0; i < team.length; i++) {
       const name = team[i]['name']
@@ -151,26 +145,20 @@ function compareTeams() {
     <br></br>
     <br></br>
     <br></br>
-    <center>
       <button type="button" class="btn btn-info" onClick={getTeams}>List Teams</button>
       { nonEmpty && <h3>Teams: </h3> }
       <div>{output}</div>
       <br></br>
-
-      <label for="inputTeam" class="sr-only">Team Name</label>
-      <input type="text" id="inputTeam" class="form-control" placeholder="Team 1" style={{ width: '18rem' }} 
-          onChange={e => setTeamName(e.target.value)} required autofocus/>
-      <label for="inputTeam2" class="sr-only">Team Name 2</label>
-      <input type="text" id="inputTeam2" class="form-control" placeholder="Team 2" style={{ width: '18rem' }} 
-          onChange={e => setTeamName2(e.target.value)} required autofocus/>
-          
-      <button type="button" class="btn btn-dark" onClick={comparisonFnc}>Compare Teams</button>
+      <input onChange={e => setTeamName(e.target.value)} placeholder="Enter first team to show"/>
+      <button onClick={viewTeam}>Set Team1</button>
+      <input onChange={e => setTeamName2(e.target.value)} placeholder="Enter second team to show"/>
+      <button onClick={viewTeam2}>Set Team2</button>
+      <button onClick={comparisonFnc}>Compare Teams</button>
       <br></br>
       {winResult}
       <p>{teamName} Score: {score1}, {teamName2} Score: {score2}</p>
       <br></br>
       {playersArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
-      </center>
     </div>
   )
 }

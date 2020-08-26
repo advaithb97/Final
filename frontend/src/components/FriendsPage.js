@@ -46,8 +46,11 @@ export default function FriendsPage() {
     <br></br>
     <br></br>
     <br></br>
-    <input onChange={e => setName(e.target.value)} placeholder="Enter a name"/>
-    <button onClick={requestFnc}>Request Friend</button>
+    <center>
+    <label for="inputName" class="sr-only">Name</label>
+    <input type="Name" id="inputName" class="form-control" placeholder="Name" style={{ width: '18rem' }} 
+          onChange={e => setName(e.target.value)} required/>
+    <button type="button" class="btn btn-success" onClick={requestFnc}>Request Friend</button>
     <br></br>
     <br></br>
     <h3>Friends: </h3>
@@ -55,6 +58,7 @@ export default function FriendsPage() {
     <br></br>
     <br></br>
     {requestsArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
+    </center>
     </div>
   )
 }

@@ -88,16 +88,18 @@ function showTeam() {
     <br></br>
     <br></br>
     <br></br>
-      <button onClick={getTeams}>List Teams</button>
+    <center>
+      <button type="button" class="btn btn-info" onClick={getTeams}>List Teams</button>
       { nonEmpty && <h3>Teams: </h3> }
       <div>{output}</div>
       <br></br>
       <br></br>
-      <input onChange={e => setTeamName(e.target.value)} placeholder="Enter team to show"/>
-      
-      <br></br>
-      <button onClick={seePlayers}>Check out Players</button>
+      <label for="inputTeam" class="sr-only">Team Name</label>
+      <input type="text" id="inputTeam" class="form-control" placeholder="Team Name" style={{ width: '18rem' }} 
+          onChange={e => setTeamName(e.target.value)} required autofocus/>      
+      <button type="button" class="btn btn-primary" onClick={seePlayers}>Check Out Players</button>
       {playersArr.map((elemval, index) => <div key={index}>{elemval}</div>)}
+    </center>
     </div>
   )
 }

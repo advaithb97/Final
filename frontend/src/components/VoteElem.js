@@ -53,10 +53,12 @@ export default function VoteElem({winTeam, lossTeam, upvotes, downvotes, upval, 
 
   return (
     <div>
-    <p>{winTeam} beats {lossTeam} Upvotes: {upVotes} Downvotes: {downVotes} <button onClick={upVote}>Upvote</button> <button onClick={downVote}>Downvote</button> </p>
+    <p>{winTeam} beats {lossTeam} <button type="button" class="btn btn-primary" onClick={upVote}>Upvote</button>
+ <button type="button" class="btn btn-danger" onClick={downVote}>Downvote</button>
+ </p>  
       <ProgressBar>
       <ProgressBar variant="success" label={`${upVotes} up`} now={upVal} key={1} />
-      <ProgressBar variant="danger" label={`${downVotes} down`} now={downVal} key={2} />
+      <ProgressBar variant="warning" label={`${downVotes} down`} now={downVal} key={2} />
       </ProgressBar>
       <br></br>
       <br></br>
